@@ -1,5 +1,5 @@
 
-<section id="page-title" data-parallax-image="<?=base_url()?>assets/front/images/banner/contact.jpg">
+<section id="page-title">
 	<div class="container">
 		<div class="page-title">
 			<h1>Innovate For TKM</h1>
@@ -137,7 +137,7 @@
             <div class="form-group">
               <input type="checkbox" name="accept_rule" class="mr-3" required>Accept <a href="#rules">rules and regulations</a>
             </div>
-						<div class="g-recaptcha" name="g-recaptcha-response" data-sitekey="6LclF8kUAAAAADNhcUpBX--IP7XYwy_GMROgtv07"></div>						
+						<div class="g-recaptcha" name="g-recaptcha-response" data-sitekey="6LfZF_EUAAAAANZ8kcPRhCXKepzq_RIOYd55Mob5"></div>						
 						<button class="btn" type="submit"><i class="fa fa-paper-plane"></i>&nbsp;Register</button>
 					</form>
 				</div>

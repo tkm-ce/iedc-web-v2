@@ -42,9 +42,9 @@ class Pages extends CI_Controller
     $this->load->view('templates/footer');
   }
 
-  function view_workshops($page)
+  function view_events($page)
   {
-    if (!file_exists(APPPATH . 'views/workshops/' . $page . '.php')) {
+    if (!file_exists(APPPATH . 'views/events/' . $page . '.php')) {
       show_404();
     }
     $temp = str_replace("-", " ", $page);
@@ -52,7 +52,7 @@ class Pages extends CI_Controller
     $data['page_title'] = $temp1;
     $data['loginURL'] = $this->googleplus->loginURL();
     $this->load->view('templates/header', $data);
-    $this->load->view('workshops/' . $page, $data);
+    $this->load->view('events/' . $page, $data);
     $this->load->view('templates/footer');
   }
 
@@ -195,5 +195,12 @@ class Pages extends CI_Controller
         }
       }
     }
+  }
+
+  function dare2develop()
+  {
+    $data['page_title'] = 'Dare2Develop';
+    $data['loginURL'] = $this->googleplus->loginURL();   
+    $this->load->view('events/dare2develop', $data);    
   }
 }

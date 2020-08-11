@@ -14,6 +14,16 @@ class Admin_model extends CI_Model
     }
     return FALSE;
   }
+  public function is_super_admin($email)
+  {
+    $this->db->where('type', 'S');
+    $this->db->where('email', $email);
+    $query = $this->db->get('admin_users');
+    if ($query->num_rows() == 1) {
+      return TRUE;
+    }
+    return FALSE;
+  }
 
   public function get_ai_ml_users()
   {
@@ -100,7 +110,7 @@ class Admin_model extends CI_Model
     $configss['upload_path'] = 'assets/uploads/images/maker-library/';
     $temp = $_FILES["img_link"]['name'];
     $file_name = time() . "." . pathinfo($temp, PATHINFO_EXTENSION);
-    $configss['file_name'] = $file_name;    
+    $configss['file_name'] = $file_name;
     $this->load->library('upload', $configss);
     if (!$this->upload->do_upload('img_link')) {
       $error = array('error' => $this->upload->display_errors());
@@ -121,5 +131,62 @@ class Admin_model extends CI_Model
   {
     $query = $this->db->get('execom_reg');
     return $query->result_array();
+  }
+
+  public function get_all_project_proposals()
+  {
+    $query = $this->db->get('project_proposal');
+    return $query->result_array();
+  }
+
+  public function get_project_team_details($project_id)
+  {
+    $this->db->where('project_id', $project_id);
+    $query = $this->db->get('project_proposal_team_members');
+    return json_encode($query->result());
+  }
+
+  public function get_project_requirements($project_id)
+  {
+    $this->db->where('project_id', $project_id);
+    $query = $this->db->get('project_proposal_requirements');
+    return json_encode($query->result());
+  }
+  public function get_project_summary($project_id)
+  {
+    $this->db->select('summary');
+    $this->db->where('project_id', $project_id);
+    $query = $this->db->get('project_proposal');
+    return json_encode($query->result());
+  }
+
+  function add_volunteer()
+  {
+    $data = $this->input->post();
+    $data = $this->security->xss_clean($data);
+    $this->form_validation->set_rules('email', 'User Email', 'required');
+    $this->form_validation->set_rules('name', 'Name', 'required');
+    $this->form_validation->set_rules('phone', 'Phone', 'required');
+    $this->form_validation->set_rules('branch', 'Branch', 'required');
+    $this->form_validation->set_rules('year', 'Year', 'required');
+    $this->form_validation->set_rules('role', 'Role', 'required');
+    $this->form_validation->set_rules('duration', 'Duration', 'required');
+    if ($this->form_validation->run() == FALSE) {
+      $this->session->set_flashdata('fail', 'Fill all fields');
+      redirect('admin/dashboard/add-user');
+    } else {
+      $data = array(
+        'email' => $this->input->post('email'),
+        'name' => $this->input->post('name'),
+        'phone' => $this->input->post('phone'),
+        'branch' => $this->input->post('branch'),
+        'year' => $this->input->post('year'),
+        'role' => $this->input->post('role'),
+        'duration' => $this->input->post('duration'),
+      );
+      $this->db->insert('volunteers', $data);
+      $this->session->set_flashdata('success', 'Success!');
+      redirect('admin/dashboard/volunteer-database');
+    }
   }
 }
